@@ -125,7 +125,7 @@
             countColBottom(i).BackColor = Color.White
         Next
         start = False
-        emptiesCnt = n * n
+        emptiesCnt = n ^ 2
         FillCounts(n, board, cells, R, C)
         startBtn.Enabled = True
         randomBtn.Enabled = True
@@ -200,25 +200,31 @@
                 board(row, col) = 0
                 emptiesCnt += 1
             Else
-                Dim isDuplicate As Boolean = False
                 cells(row, col).Text = board(row, col).ToString()
                 If board(row, col) = 1 Then
                     emptiesCnt -= 1
                 End If
-                For i = 0 To n - 1
-                    If i <> row And board(i, col) = board(row, col) Then
-                        cells(i, col).BackColor = Color.Red
-                        isDuplicate = True
-                    End If
-                    If i <> col And board(row, i) = board(row, col) Then
-                        cells(row, i).BackColor = Color.Red
-                        isDuplicate = True
+            End If
+            For i = 0 To n - 1
+                For j = 0 To n - 1
+                    If board(i, j) <> 0 Then
+                        Dim isDuplicate As Boolean = False
+                        For k = 0 To n - 1
+                            If k <> i And board(k, j) = board(i, j) Then
+                                cells(k, j).BackColor = Color.Red
+                                isDuplicate = True
+                            End If
+                            If k <> j And board(i, k) = board(i, j) Then
+                                cells(i, k).BackColor = Color.Red
+                                isDuplicate = True
+                            End If
+                        Next
+                        If isDuplicate Then
+                            cells(i, j).BackColor = Color.Red
+                        End If
                     End If
                 Next
-                If isDuplicate Then
-                    cells(row, col).BackColor = Color.Red
-                End If
-            End If
+            Next
             If emptiesCnt = 0 Then
                 For i = 0 To n - 1
                     Dim cntRowL As Integer = CountRow(n, board, i, True)
@@ -264,7 +270,7 @@
             countColBottom(i).BackColor = Color.White
         Next
         start = False
-        emptiesCnt = n * n
+        emptiesCnt = n ^ 2
         startBtn.Enabled = True
     End Sub
 
